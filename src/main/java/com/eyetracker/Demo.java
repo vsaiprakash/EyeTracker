@@ -37,7 +37,8 @@ public class Demo{
     public static void main(String args[]) throws IOException, InterruptedException{
 //        gettingImageFromWebcam();
 //        recognizeFaceInImage();
-        readingImageAndDetectingFace();
+//        readingImageAndDetectingFace();
+            new FaceRecognizer().faceRecognizer();
     }
     
     public static void gettingImageFromWebcam() throws IOException{
@@ -73,7 +74,7 @@ public class Demo{
     public static void readingImageAndDetectingFace() throws IOException, InterruptedException{
         HaarCascadeDetector detector = new HaarCascadeDetector();
         List<DetectedFace> faces = null;
-        
+        int number = 0;
         Webcam webcam = Webcam.getDefault();
         webcam.open();
         Calendar calendar = Calendar.getInstance();
@@ -90,8 +91,11 @@ public class Demo{
             Iterator <DetectedFace> dfi = faces.iterator();
             if(dfi.hasNext()){
                 date = calendar.getTime();
-                String dateString = date.toString().replaceAll(" ","").replaceAll(":","");
+                String dateString = date.toString().replaceAll(" ","").replaceAll(":","")+number;
                 ImageIO.write(image, "PNG", new File((outputFolderPath+dateString+".png")));
+            }
+            else{
+                System.out.println("No faces found in the captured image");
             }
             while (dfi.hasNext()) {
                 DetectedFace face = dfi.next();
@@ -99,9 +103,12 @@ public class Demo{
             }
             //sleep after every second to avoid/delay Date collision
             Thread.sleep(1000);
+            number++;
         }
 //        webcam.close();
         
         
     }
+    
+    
 }
